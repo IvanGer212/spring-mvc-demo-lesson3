@@ -14,12 +14,14 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private ArrayList<Product> products;
     private final Random random = new Random();
+    private long curIdNumber;
 
     @PostConstruct
     void init(){
     products = new ArrayList<>();
     for (int i = 1; i<=5; i++){
-        products.add(new Product(i,"Product "+i,random.nextInt()*i*1000));
+        curIdNumber++;
+        products.add(new Product(curIdNumber,"Product "+curIdNumber,random.nextInt()*i*1000));
     }
     }
 
@@ -39,7 +41,22 @@ public class ProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public Product add(Product product) {
-        return null;
+    public Product add(Product newProduct) {
+        Optional<Product> mayBeExistingProduct = products.stream().
+                filter(curProduct -> curProduct.getTitle().equals(newProduct.getTitle())).
+                findFirst();
+        if(mayBeExistingProduct.isPresent()){
+            Product existingProduct = mayBeExistingProduct.get();
+            existingProduct.setTitle(newProduct.getTitle());
+            existingProduct.setCost(newProduct.getCost());
+        }
+        else
+        {
+            curIdNumber++;
+            newProduct.setId(curIdNumber);
+            products.add(newProduct);
+
+        }
+        return newProduct;
     }
 }
