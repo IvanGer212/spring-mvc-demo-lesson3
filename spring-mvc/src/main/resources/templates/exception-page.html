@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error page</title>
+</head>
+<body>
+<h1 th:text="${error.message}"></h1>
+<ul th:each="detail : ${error.details}">
+    <li th:text="${detail}"></li>
+</ul>
+<a href="/product" methods="get">Вернуться на главную станицу</a>
+<p> <a href="/product/create-product" methods="get">Вернуться на станицу создания продукта</a> </p>
+
+</body>
+</html>
